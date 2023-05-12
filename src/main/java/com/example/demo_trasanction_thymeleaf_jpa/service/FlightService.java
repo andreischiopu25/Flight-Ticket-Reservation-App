@@ -51,9 +51,9 @@ public class FlightService {
         return flightRepository.findByFlightId(id).orElseThrow( ()->new RuntimeException("Flight not found for the ID"));
     }
 
-    public FlightDTO getExpenseById (String id){
-        Flight existingExpense = getFlight(id);
-        return mapToDTO(existingExpense);
+    public FlightDTO getFlightById (String id){
+        Flight existingFlight = getFlight(id);
+        return mapToDTO(existingFlight);
     }
 
     public void deleteFlight(String id){
@@ -101,6 +101,7 @@ public class FlightService {
         flightDTO.setPrice(flight.getPrice());
         flightDTO.setAirplane(flight.getAirplane());
         flightDTO.setDate(flight.getDate());
+        flightDTO.setDateString(DateTimeUtil.convertDateToString((Date) flightDTO.getDate()));
         return flightDTO;
     }
 
@@ -113,18 +114,14 @@ public class FlightService {
         }else flight.setFlightId(flightDTO.getFlightId());
         flight.setDestination(flightDTO.getDestination());
         flight.setPickupTime(flightDTO.getPickupTime());
-        flight.setArrivalTime(flight.getArrivalTime());
-        flight.setPrice(flight.getPrice());
-        flight.setAirplane(flight.getAirplane());
+        flight.setArrivalTime(flightDTO.getArrivalTime());
+        flight.setPrice(flightDTO.getPrice());
+        flight.setAirplane(flightDTO.getAirplane());
 
         flight.setDate(DateTimeUtil.convertStringToDate(flightDTO.getDateString()));
 
         return flight;
     }
-
-
-
-
 
 
 

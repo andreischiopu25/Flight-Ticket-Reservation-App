@@ -3,7 +3,9 @@ package com.example.demo_trasanction_thymeleaf_jpa.controller;
 
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.FlightDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.FlightFilterDTO;
+import com.example.demo_trasanction_thymeleaf_jpa.DTO.PassengerInfoDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.service.FlightService;
+import com.example.demo_trasanction_thymeleaf_jpa.validator.FlightValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
 import java.util.List;
@@ -28,7 +31,7 @@ public class FlightController {
     @GetMapping("/flights")
     public String showFlightList(Model model){
         List<FlightDTO> list =  flightService.getAllFlights();
-        model.addAttribute("expenses", list);
+        model.addAttribute("flights", list);
      //   model.addAttribute("filter", new FlightFilterDTO());
         String totalFlights= flightService.totalFlights(list);
     //    model.addAttribute("totalExpenses", totalFlights);
@@ -36,23 +39,48 @@ public class FlightController {
     }
 
     @GetMapping("/createFlight")
-    public String showExpenseForm(Model model){
+    public String showFlightForm(Model model){
         model.addAttribute("flight", new FlightDTO());
         return "flight-form";
     }
 
     @PostMapping("/saveOrUpdateFlight")
-    public String saveOrUpdateExpenseDetails(@ModelAttribute("expense") FlightDTO flightDTO,
+    public String saveOrUpdateFlightDetails(@ModelAttribute("flight") FlightDTO flightDTO,
                                              BindingResult result) throws ParseException {
-        System.out.println("Printing the Expense DTO: "+flightDTO);
+        System.out.println("Printing the Flight DTO: "+flightDTO);
+        System.out.println("Printing the Flight DTO: "+flightDTO.getDateString());
 
-       /* new FlightValidator().validate(expenseDTO, result);
+       /*new FlightValidator().validate(flightDTO, result);
         if (result.hasErrors()){
-            return "expense-form";
+            return "flight-form";
         }*/
         flightService.saveFlightDetails(flightDTO);
         return "redirect:/flights";
     }
+
+    @GetMapping("/deleteFlight")
+    public String deleteFlight(@RequestParam String id){
+
+        System.out.println("Printing the expense Id: "+id);
+        flightService.deleteFlight(id);
+        return "redirect:/flights";
+    }
+    @GetMapping("/updateExpense")
+    public String updateFlight(@RequestParam String id, Model model) throws ParseException{
+        System.out.println("Printing the flight Id inside update method:" +id);
+        FlightDTO flight =flightService.getFlightById(id);
+        model.addAttribute("flight", flight);
+        return "flight-form";
+    }
+    @GetMapping("/bookFlightTicket")
+    public String payFlight(Model model){
+        model.addAttribute("passengerinfo", new PassengerInfoDTO());
+        return "passengerinfo-form";
+
+    }
+
+
+
 
 
 

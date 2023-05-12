@@ -18,7 +18,7 @@
         <hr/>
         <form th:action="@{/saveOrUpdateFlight}" th:object="${flight}" method="post">
             <input type="text" placeholder="Enter flight destination" th:field="*{destination}"/>
-            <span th:if="${#fields.hasErrors('destination')}" th:errors="*{name}"></span>
+            <span th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}"></span>
             <br/><br/>
             <input type="text" placeholder="Enter flight departure" th:field="*{pickupTime}"/>
             <span th:if="${#fields.hasErrors('pickupTime')}" th:errors="*{pickupTime}"></span>
@@ -41,7 +41,7 @@
             <input type ="hidden" th:field="*{flightId}"/>
         </form>
         <div>
-            <a th:href="@{/flights}">Back to Expenses</a>
+            <a th:href="@{/flights}">Back to Flights</a>
         </div>
 
 </body>

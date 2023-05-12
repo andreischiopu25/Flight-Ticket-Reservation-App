@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Flight-list</title>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
 
 </head>
@@ -23,13 +23,14 @@
                 <th>Price</th>
         </thead>
     <tbody>
-     <tr th:each="flight: ${flight}">
+     <tr th:each="flight: ${flights}">
           <td th:text="${flight.destination}"></td>
           <td th:text="${flight.pickupTime}"></td>
           <td th:text="${flight.arrivalTime}"></td>
           <td th:text="${flight.dateString}"></td>
           <td th:text="${flight.airplane}"></td>
           <td th:text="${flight.price}"></td>
+          <td> <a th:href ="@{/bookFlightTicket(id=${flight.flightId})}">Buy</a> </td>
      </tr>
      </tbody>
     </table>

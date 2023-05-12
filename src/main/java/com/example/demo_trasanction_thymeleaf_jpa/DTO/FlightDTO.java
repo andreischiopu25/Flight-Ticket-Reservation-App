@@ -64,7 +64,7 @@ public class FlightDTO {
     }
 
     public void setDestination(String destination) {
-        destination = destination;
+        this.destination = destination;
     }
 
     public String getPickupTime() {
