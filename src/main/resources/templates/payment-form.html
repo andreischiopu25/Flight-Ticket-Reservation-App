@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Passenger-form</title>
+</head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<body>
+        <h1>Make a payment</h1>
+        <hr/>
+
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+                Debit or credit card
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+                PayPal
+            </label>
+        </div>
+        <br/><br/>
+
+        <form th:action="@{/saveOrUpdatePayment}" th:object="${payment}" method="post">
+            <input type="text" placeholder="Enter card number " th:field="*{cardNumber}"/>
+            <span th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></span>
+            <br/><br/>
+            <input type="text" placeholder="Enter expiration date " th:field="*{expirationDate}"/>
+            <span th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}"></span>
+            <br/><br/>
+            <input type="text" placeholder="Enter cvc " th:field="*{cvc}"/>
+            <span th:if="${#fields.hasErrors('cvc')}" th:errors="*{cvc}"></span>
+            <br/><br/>
+            <button type ="submit"> Submit order</button>
+        </form>
+
+</body>
+</html>

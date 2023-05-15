@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#createdAt" ).datepicker();
+        } );
+    </script>
+</head>
+<body>
+        <h1>Create New Flight</h1>
+        <hr/>
+        <form th:action="@{/saveOrUpdateFlight}" th:object="${flight}" method="post">
+            <input type="text" placeholder="Enter flight destination" th:field="*{destination}"/>
+            <span th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}"></span>
+            <br/><br/>
+            <input type="text" placeholder="Enter flight departure" th:field="*{pickupTime}"/>
+            <span th:if="${#fields.hasErrors('pickupTime')}" th:errors="*{pickupTime}"></span>
+            <br/><br/>
+            <input type="text" placeholder="Enter flight arrival" th:field="*{arrivalTime}"/>
+            <span th:if="${#fields.hasErrors('arrivalTime')}" th:errors="*{arrivalTime}"></span>
+            <br/><br/>
+            <input type="text" placeholder="Enter airplane" th:field="*{airplane}"/>
+            <span th:if="${#fields.hasErrors('airplane')}" th:errors="*{airplane}"></span>
+            <br/><br/>
+            <input type="text" placeholder="dd/mm/yyyy" th:field="*{dateString}" id="createdAt"/>
+            <span th:if="${#fields.hasErrors('dateString')}" th:errors="*{dateString}"></span>
+            <br/><br/>
+            <input type="text" placeholder="Enter price" th:field="*{price}"/>
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <br/><br/>
+
+            <button type ="submit"> Submit</button>
+            <input type ="hidden" th:field="*{id}"/>
+            <input type ="hidden" th:field="*{flightId}"/>
+        </form>
+        <div>
+            <a th:href="@{/flights}">Back to Flights</a>
+        </div>
+
+</body>
+</html>
