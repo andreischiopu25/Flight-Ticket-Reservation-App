@@ -23,6 +23,7 @@
                 <th>Arrival</th>
                 <th>Date</th>
                 <th>Airplane</th>
+                <th>No. of seats</th>
                 <th>Price</th>
         </thead>
     <tbody>
@@ -34,7 +35,9 @@
           <td th:text="${flight.arrivalTime}"></td>
           <td th:text="${flight.dateString}"></td>
           <td th:text="${flight.airplane}"></td>
+          <td th:text="${flight.seats}"></td>
           <td th:text="${flight.price}"></td>
+
           <td> <a th:href ="@{/bookFlightTicket(id=${flight.flightId})}">Buy</a> </td>
      </tr>
      </tbody>

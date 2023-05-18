@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 public class Flight {
@@ -28,11 +29,13 @@ public class Flight {
 
     private Date date;
 
+    private Integer seats;
+
    @ManyToOne
    @JoinColumn(name= "user_id", nullable = false)
     private User user;
 
-    public Flight(Long id, String flightId, String destination, String pickupTime, String arrivalTime, BigDecimal price, String airplane, Date date) {
+    public Flight(Long id, String flightId, String destination, String pickupTime, String arrivalTime, BigDecimal price, String airplane, Date date, Integer seats, User user) {
         this.id = id;
         this.flightId = flightId;
         this.destination = destination;
@@ -41,17 +44,7 @@ public class Flight {
         this.price = price;
         this.airplane = airplane;
         this.date = date;
-    }
-
-    public Flight(Long id, String flightId, String destination, String pickupTime, String arrivalTime, BigDecimal price, String airplane, Date date, User user) {
-        this.id = id;
-        this.flightId = flightId;
-        this.destination = destination;
-        this.pickupTime = pickupTime;
-        this.arrivalTime = arrivalTime;
-        this.price = price;
-        this.airplane = airplane;
-        this.date = date;
+        this.seats = seats;
         this.user = user;
     }
 
@@ -128,5 +121,13 @@ public class Flight {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Integer seats) {
+        this.seats = seats;
     }
 }

@@ -8,6 +8,7 @@ import com.example.demo_trasanction_thymeleaf_jpa.repository.FlightRepository;
 import com.example.demo_trasanction_thymeleaf_jpa.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.math.BigDecimal.*;
 
 @Service
-public class FlightService {
+public class FlightService{
 
     private FlightRepository flightRepository;
     private final UserService userService;
@@ -39,9 +40,10 @@ public class FlightService {
         return flightList;
     }
 
-    public FlightDTO saveFlightDetails(FlightDTO flightDTO) throws ParseException {
-        //map the DTO to entity
 
+    public FlightDTO saveFlightDetails(FlightDTO flightDTO) throws ParseException {
+
+        //map the DTO to entity
         Flight flight = mapToEntity (flightDTO);
         // add the logged in user to the expense entity
         flight.setUser(userService.getLoggedInUser());
@@ -53,9 +55,15 @@ public class FlightService {
         //map the entity to DTO
         return mapToDTO(flight);
     }
+
+
     public Flight getFlight(String id){
         return flightRepository.findByFlightId(id).orElseThrow( ()->new RuntimeException("Flight not found for the ID"));
     }
+
+   /* public FlightDTO bookSeats (Integer nr){
+            Flight flight;
+    }*/
 
     public FlightDTO getFlightById (String id){
         Flight existingFlight = getFlight(id);
@@ -108,6 +116,7 @@ public class FlightService {
         flightDTO.setAirplane(flight.getAirplane());
         flightDTO.setDate(flight.getDate());
         flightDTO.setDateString(DateTimeUtil.convertDateToString((Date) flightDTO.getDate()));
+        flightDTO.setSeats(flight.getSeats());
         return flightDTO;
     }
 
@@ -123,12 +132,24 @@ public class FlightService {
         flight.setArrivalTime(flightDTO.getArrivalTime());
         flight.setPrice(flightDTO.getPrice());
         flight.setAirplane(flightDTO.getAirplane());
-
         flight.setDate(DateTimeUtil.convertStringToDate(flightDTO.getDateString()));
+        flight.setSeats(flightDTO.getSeats());
 
         return flight;
     }
 
+    @Transactional
+    public void reserveTickets(String nrOfSeats, String flightId) throws ParseException {
+        FlightDTO flightDTO = getFlightById(flightId);
+        if (flightDTO.getSeats() >= Integer.parseInt(nrOfSeats)){
+            flightDTO.setSeats(flightDTO.getSeats()-Integer.parseInt(nrOfSeats));
+            Flight flight = mapToEntity (flightDTO);
+            flight.setUser(userService.getLoggedInUser());
 
-
+            flightRepository.save(flight);
+            System.out.println("Reservare success");
+            return ;
+        }
+        System.out.println("Rezervare nereusita");
+    }
 }

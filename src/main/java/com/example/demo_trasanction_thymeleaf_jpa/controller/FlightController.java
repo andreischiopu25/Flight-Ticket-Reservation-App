@@ -3,8 +3,12 @@ package com.example.demo_trasanction_thymeleaf_jpa.controller;
 
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.FlightDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.PaymentDTO;
+import com.example.demo_trasanction_thymeleaf_jpa.DTO.ReservationDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.service.FlightService;
 import com.example.demo_trasanction_thymeleaf_jpa.service.PaymentService;
+import com.example.demo_trasanction_thymeleaf_jpa.service.ReservationServiceDelete;
+import com.example.demo_trasanction_thymeleaf_jpa.service.ReservationServiceSave;
+import com.example.demo_trasanction_thymeleaf_jpa.threads.ThreadSave;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +26,16 @@ public class FlightController {
 
     private final FlightService flightService;
     private final PaymentService paymentService;
+    private final ReservationServiceSave reservationServiceSave;
+    private final ReservationServiceDelete reservationServiceDelete;
+
 
     @Autowired
-    public FlightController(FlightService flightService, PaymentService paymentService) {
+    public FlightController(FlightService flightService, PaymentService paymentService, ReservationServiceSave reservationServiceSave, ReservationServiceDelete reservationServiceDelete) {
         this.flightService = flightService;
         this.paymentService = paymentService;
+        this.reservationServiceSave = reservationServiceSave;
+        this.reservationServiceDelete = reservationServiceDelete;
     }
 
 
@@ -67,25 +76,35 @@ public class FlightController {
         flightService.deleteFlight(id);
         return "redirect:/flights";
     }
-    @GetMapping("/updateExpense")
+    @GetMapping("/updateFlight")
     public String updateFlight(@RequestParam String id, Model model) throws ParseException{
         System.out.println("Printing the flight Id inside update method:" +id);
         FlightDTO flight =flightService.getFlightById(id);
         model.addAttribute("flight", flight);
         return "flight-form";
     }
-    @GetMapping("/bookFlightTicket")
-    public String payFlight(Model model){
-        model.addAttribute("payment", new PaymentDTO());
-        return "payment-form";
-    }
+
 
     @PostMapping("saveOrUpdatePayment")
     public String saveOrUpdatePaymentDetails (@ModelAttribute("payment") PaymentDTO paymentDTO,
                                               BindingResult result) throws ParseException{
         paymentService.savePaymentDetails(paymentDTO);
         return "redirect:/flights";
+    }
+    @GetMapping("/bookFlightTicket")
+    public String bookFlightTicket(@RequestParam String id ,Model model){
+        System.out.println("Printing the flight Id inside bookFlightTicket method:"+id);
+        model.addAttribute("flightId", id);
+        return "reservation-form";
+    }
 
+    @PostMapping("/saveOrUpdateReservation")
+    public String saveOrUpdateReservationDetails(@RequestParam(value = "nrOfSeats", required = false) String nrOfSeats,
+                                                 @RequestParam(value= "flightId", required =false) String flightId,
+                                                 Model model) throws ParseException{
+      flightService.reserveTickets(nrOfSeats,flightId );
+
+        return "redirect:/flights";
     }
 
 

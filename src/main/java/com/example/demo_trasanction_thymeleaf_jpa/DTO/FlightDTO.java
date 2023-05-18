@@ -28,7 +28,9 @@ public class FlightDTO {
 
     private String dateString;
 
-    public FlightDTO(Long id, String flightId, String destination, String pickupTime, String arrivalTime, BigDecimal price, String airplane, Date date, String dateString) {
+    private Integer seats;
+
+    public FlightDTO(Long id, String flightId, String destination, String pickupTime, String arrivalTime, BigDecimal price, String airplane, Date date, String dateString, Integer seats) {
         this.id = id;
         this.flightId = flightId;
         this.destination = destination;
@@ -38,6 +40,7 @@ public class FlightDTO {
         this.airplane = airplane;
         this.date = date;
         this.dateString = dateString;
+        this.seats = seats;
     }
 
     public FlightDTO() {
@@ -115,5 +118,11 @@ public class FlightDTO {
         this.dateString = dateString;
     }
 
+    public Integer getSeats() {
+        return seats;
+    }
 
+    public void setSeats(Integer seats) {
+        this.seats = seats;
+    }
 }
