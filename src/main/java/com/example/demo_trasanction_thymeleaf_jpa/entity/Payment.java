@@ -2,6 +2,8 @@ package com.example.demo_trasanction_thymeleaf_jpa.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Payment {
 
@@ -12,16 +14,21 @@ public class Payment {
     @Column(unique = true)
     private String paymentId;
     private String cardNumber;
-    private double amount;
+    private BigDecimal amount;
     private String cardType;
     private String expirationDate;
     private String cvc;
 
-    @OneToOne
-    @JoinColumn(name= "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name= "user_id", nullable = false, unique = false)
     private User user;
 
-    public Payment(Long id, String paymentId, String cardNumber, double amount, String cardType, String expirationDate, String cvc, User user) {
+
+    private String  flightId;
+
+    private Integer seats;
+
+    public Payment(Long id, String paymentId, String cardNumber, BigDecimal amount, String cardType, String expirationDate, String cvc, User user, String flightId, Integer seats) {
         this.id = id;
         this.paymentId = paymentId;
         this.cardNumber = cardNumber;
@@ -30,6 +37,8 @@ public class Payment {
         this.expirationDate = expirationDate;
         this.cvc = cvc;
         this.user = user;
+        this.flightId = flightId;
+        this.seats = seats;
     }
 
     public Payment() {
@@ -59,11 +68,11 @@ public class Payment {
         this.cardNumber = cardNumber;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -97,5 +106,21 @@ public class Payment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(String flightId) {
+        this.flightId = flightId;
+    }
+
+    public Integer getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Integer seats) {
+        this.seats = seats;
     }
 }

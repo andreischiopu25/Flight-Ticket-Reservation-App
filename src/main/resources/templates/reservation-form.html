@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Seat Reservation</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
 </head>
 <body>
       <h1>Reserve Seat</h1>
       <hr/>
       <form th:action="@{/saveOrUpdateReservation(nr=${nrOfSeats}, flightId=${flightId})}"  method="post">
-        <input type="text" placeholder="No. of seats" th:name="nrOfSeats"/>
-
-          <input type="submit"/> <br><br>
+        <input type="text" placeholder="No. of seats" th:name="nrOfSeats" th:value="${nrOfSeats}"/>
+        <input type="submit"/> <br><br>
       </form>
+<!--      <a  class="btn btn-success" th:href ="@{/saveOrUpdatePayment(id=${flightId}, nr =${nrOfSeats})}">Pay </a><br><br>   -->
       <div>
         <a th:href="@{/flights}">Back to Flights</a>
       </div>

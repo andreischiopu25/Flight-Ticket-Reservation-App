@@ -2,6 +2,9 @@ package com.example.demo_trasanction_thymeleaf_jpa.controller;
 
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.UserDTO;
 import jakarta.validation.Valid;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import com.example.demo_trasanction_thymeleaf_jpa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,11 @@ public class AuthController {
 
     @GetMapping({"/login", "/"})
     public String showLoginPage(){
-        return "login";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null  || auth instanceof AnonymousAuthenticationToken){
+            return "login";
+        }
+        return "redirect:/flights";
     }
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
@@ -40,6 +47,6 @@ public class AuthController {
         }
         userService.save(userDTO);
         model.addAttribute("successMsg", true);
-        return "login";
+        return "response";
     }
 }

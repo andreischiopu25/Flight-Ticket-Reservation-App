@@ -12,22 +12,20 @@
         <h1>Make a payment</h1>
         <hr/>
 
+        <form th:action="@{/saveOrUpdatePayment(nr=${nrOfSeats}, flightId=${flightId})}" th:object="${payment}" method="post" >
+            <div class="col-md-6 form-group">
+                <strong>Duration:</strong>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" th:field="*{cardType}" id="option1" value="Credit Card">
+                    <label class="form-check-label" for="option1">Credit Card</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" th:field="*{cardType}" id="option2" value="PayPal">
+                    <label class="form-check-label" for="option2">PayPal</label>
+                </div>
+            </div>
+            <br><br>
 
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-                Debit or credit card
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-            <label class="form-check-label" for="flexRadioDefault2">
-                PayPal
-            </label>
-        </div>
-        <br/><br/>
-
-        <form th:action="@{/saveOrUpdatePayment}" th:object="${payment}" method="post">
             <input type="text" placeholder="Enter card number " th:field="*{cardNumber}"/>
             <span th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></span>
             <br/><br/>

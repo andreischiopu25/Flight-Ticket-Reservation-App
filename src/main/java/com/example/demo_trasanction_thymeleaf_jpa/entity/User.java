@@ -2,6 +2,8 @@ package com.example.demo_trasanction_thymeleaf_jpa.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class User {
     @Id
@@ -16,9 +18,21 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    private BigDecimal balance;
     private String password;
 
 
+    public User() {
+    }
+
+    public User(Long id, String userId, String name, String email, String password, BigDecimal balance) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.balance = balance;
+    }
 
     public Long getId() {
         return id;
@@ -58,5 +72,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 }

@@ -40,6 +40,7 @@ public class UserService {
         User user =new User();
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
+        user.setBalance(userDTO.getBalance());
         user.setPassword(userDTO.getPassword());
         return user;
     }

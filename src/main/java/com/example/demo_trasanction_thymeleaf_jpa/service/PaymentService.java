@@ -1,29 +1,29 @@
 package com.example.demo_trasanction_thymeleaf_jpa.service;
 
-import com.example.demo_trasanction_thymeleaf_jpa.DTO.FlightDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.PaymentDTO;
-import com.example.demo_trasanction_thymeleaf_jpa.entity.Flight;
 import com.example.demo_trasanction_thymeleaf_jpa.entity.Payment;
-import com.example.demo_trasanction_thymeleaf_jpa.entity.User;
 import com.example.demo_trasanction_thymeleaf_jpa.repository.PaymentRepository;
-import com.example.demo_trasanction_thymeleaf_jpa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final UserService userService;
+
+    private final FlightService flightService;
+
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository,UserService userService ) {
+    public PaymentService(PaymentRepository paymentRepository, UserService userService, FlightService flightService) {
         this.paymentRepository = paymentRepository;
         this.userService = userService;
+        this.flightService = flightService;
     }
 
     public void save (PaymentDTO paymentDTO){
@@ -40,13 +40,14 @@ public class PaymentService {
         return mapToDTO(existingPayment);
     }
 
-
+    @Transactional
     public PaymentDTO savePaymentDetails(PaymentDTO paymentDTO) throws ParseException {
         //map the DTO to entity
         Payment payment = mapToEntity (paymentDTO);
-        // add the logged in user to the expense entity
 
+        // add the logged in user to the expense entity
         payment.setUser(userService.getLoggedInUser());
+
       //  payment.setUser(userService.getLoggedInUser());
 
         //add the loggedin user to the expense entity
@@ -68,9 +69,10 @@ public class PaymentService {
         payment.setCardNumber(paymentDTO.getCardNumber());
         payment.setCardType(paymentDTO.getCardType());
         payment.setExpirationDate(paymentDTO.getExpirationDate());
+        payment.setFlightId(paymentDTO.getFlightId());
+        payment.setSeats(paymentDTO.getSeats());
         return payment;
     }
-
     private PaymentDTO mapToDTO (Payment payment){
         PaymentDTO paymentDTO = new PaymentDTO();
         paymentDTO.setId(payment.getId());
@@ -80,6 +82,8 @@ public class PaymentService {
         paymentDTO.setCardNumber(payment.getCardNumber());
         paymentDTO.setCardType(payment.getCardType());
         paymentDTO.setExpirationDate(payment.getExpirationDate());
+        paymentDTO.setFlightId(payment.getFlightId());
+        paymentDTO.setSeats(payment.getSeats());
         return paymentDTO;
     }
 

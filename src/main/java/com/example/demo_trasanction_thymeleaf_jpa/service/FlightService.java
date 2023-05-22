@@ -57,6 +57,7 @@ public class FlightService{
     }
 
 
+
     public Flight getFlight(String id){
         return flightRepository.findByFlightId(id).orElseThrow( ()->new RuntimeException("Flight not found for the ID"));
     }
@@ -64,7 +65,7 @@ public class FlightService{
    /* public FlightDTO bookSeats (Integer nr){
             Flight flight;
     }*/
-
+   @Transactional
     public FlightDTO getFlightById (String id){
         Flight existingFlight = getFlight(id);
         return mapToDTO(existingFlight);
