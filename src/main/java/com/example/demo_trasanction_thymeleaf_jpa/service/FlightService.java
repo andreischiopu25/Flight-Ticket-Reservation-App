@@ -43,16 +43,14 @@ public class FlightService{
 
     public FlightDTO saveFlightDetails(FlightDTO flightDTO) throws ParseException {
 
-        //map the DTO to entity
+
         Flight flight = mapToEntity (flightDTO);
-        // add the logged in user to the expense entity
+
         flight.setUser(userService.getLoggedInUser());
 
-        //add the loggedin user to the expense entity
-    //    expense.setUser(userService.getLoggedInUser());
-        //Save the entity to Database
+
         flight = flightRepository.save(flight);
-        //map the entity to DTO
+
         return mapToDTO(flight);
     }
 
@@ -121,7 +119,7 @@ public class FlightService{
         return flightDTO;
     }
 
-    private Flight mapToEntity(FlightDTO flightDTO) throws ParseException {
+    public Flight mapToEntity(FlightDTO flightDTO) throws ParseException {
 
         Flight flight =new Flight();
         flight.setId(flightDTO.getId());

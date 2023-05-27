@@ -36,7 +36,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private User mapToEntity(UserDTO userDTO) {
+    public User mapToEntity(UserDTO userDTO) {
         User user =new User();
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
@@ -44,7 +44,6 @@ public class UserService {
         user.setPassword(userDTO.getPassword());
         return user;
     }
-
     public User getLoggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserEmail = auth.getName();
