@@ -92,6 +92,18 @@
                 </div>
             </div>
         </div>
+
+       <div class="container-fluid bg-light py-4 mb-2" th:if="${user.name == 'andrei'} " >
+            <div class="app-header">
+            <!--    <h2 class="font-weight-light">
+                    List of flights
+                </h2>   -->
+                <div class="mt-4">
+                    <a class="btn  button_default text"
+                       th:href="@{/createFlight}">Buton Admin</a>
+                </div>
+            </div>
+        </div>
          <div class="app-header">
           <!-- update and delete -->
              <div class="row justify-content-center">

@@ -34,8 +34,9 @@ public class FlightService{
     }
 
     public List<FlightDTO> getAllFlights(){
-        User user =userService.getLoggedInUser();
-        List<Flight> list = flightRepository.findByUserId(user.getId());
+    /*    User user =userService.getLoggedInUser();
+        List<Flight> list = flightRepository.findByUserId(user.getId());*/
+        List<Flight> list = flightRepository.findAll();
         List<FlightDTO> flightList = list.stream().map(this::mapToDTO).collect(Collectors.toList());
         return flightList;
     }

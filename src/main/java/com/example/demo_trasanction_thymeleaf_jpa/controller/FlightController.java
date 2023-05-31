@@ -5,8 +5,8 @@ import com.example.demo_trasanction_thymeleaf_jpa.DTO.FlightDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.DTO.PaymentDTO;
 import com.example.demo_trasanction_thymeleaf_jpa.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +31,23 @@ public class FlightController {
     private final ReservationServiceSave reservationServiceSave;
     private final ReservationServiceDelete reservationServiceDelete;
 
+    private final UserService userService;
+
     private final AsyncServiceImpl asyncService;
 
 
+
     @Autowired
-    public FlightController(FlightService flightService, PaymentService paymentService, ReservationServiceSave reservationServiceSave, ReservationServiceDelete reservationServiceDelete, AsyncServiceImpl asyncService) {
+    private JavaMailSender mailSender;
+
+
+    @Autowired
+    public FlightController(FlightService flightService, PaymentService paymentService, ReservationServiceSave reservationServiceSave, ReservationServiceDelete reservationServiceDelete, UserService userService, AsyncServiceImpl asyncService) {
         this.flightService = flightService;
         this.paymentService = paymentService;
         this.reservationServiceSave = reservationServiceSave;
         this.reservationServiceDelete = reservationServiceDelete;
+        this.userService = userService;
         this.asyncService = asyncService;
     }
 
@@ -48,6 +56,7 @@ public class FlightController {
     public String showFlightList(Model model){
         List<FlightDTO> list =  flightService.getAllFlights();
         model.addAttribute("flights", list);
+        model.addAttribute("user", userService.getLoggedInUser() );
      //   model.addAttribute("filter", new FlightFilterDTO());
         String totalFlights= flightService.totalFlights(list);
     //    model.addAttribute("totalExpenses", totalFlights);
@@ -130,10 +139,17 @@ public class FlightController {
             paymentDTO.setFlightId(id);
             paymentDTO.setSeats((Integer)Integer.parseInt(nr));
             PaymentDTO newPaymentDTO = paymentService.savePaymentDetails(paymentDTO);
-            String response = "task completes in :" +
+            String response = "task completes in " +
                     (System.currentTimeMillis() - start) + " milliseconds";
             System.out.println("Async task duration: " + response);
             model.addAttribute("paymentId", newPaymentDTO.getPaymentId());
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("contact@blueair.com");
+            message.setTo("licenta.utm2023@gmail.com");
+            message.setSubject("Subiect");
+            message.setText("Continutul subiectului");
+            mailSender.send(message);
 
             return "payment-confirmation";
         }
@@ -157,6 +173,14 @@ public class FlightController {
     }*/
 
 
+
+    // ----------------- ADMIN----------
+
+    @GetMapping("/createFlightAdmin")
+    public String showFlightAdminForm(Model model){
+        model.addAttribute("flight", new FlightDTO());
+        return "flight-form";
+    }
 
 
 
