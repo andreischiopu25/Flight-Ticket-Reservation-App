@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <title>Passenger-form</title>
+</head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<!--- -->
+
+<body>
+<div class="checkout-panel">
+  <div class="panel-body">
+    <h2 class="title">Checkout</h2>
+
+    <form th:action="@{/saveOrUpdatePayment(nr=${nrOfSeats}, flightId=${flightId})}" th:object="${payment}" method="post" >
+      <div class="col-md-6 form-group">
+        <strong>Card type:</strong>
+        <div class="payment-method">
+          <label class="method card">
+            <div class="card-logos">
+              <img th:src="@{images/visa-logo.png}" style='max-width: 50px'/>
+              <img th:src="@{images/mastercard3.png}" style='max-width: 50px'/>
+            </div>
+            <div class="radio-input">
+              <input class="form-check-input" type="radio" th:field="*{cardType}" id="option1" value="Credit Card">
+              <label class="form-check-label" for="option1">Credit Card</label>
+            </div>
+          </label>
+
+          <label class="method paypal">
+            <img th:src="@{images/paypal.png}" style='max-width: 100px'/>
+            <div class="radio-input">
+              <input class="form-check-input" type="radio" th:field="*{cardType}" id="option2" value="PayPal">
+              <label class="form-check-label" for="option2">PayPal</label>
+            </div>
+          </label>
+        </div>
+      </div>
+
+
+      <!---
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" th:field="*{cardType}" id="option1" value="Credit Card">
+                          <label class="form-check-label" for="option1">Credit Card</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" th:field="*{cardType}" id="option2" value="PayPal">
+                          <label class="form-check-label" for="option2">PayPal</label>
+                      </div>
+      -->
+
+      <br><br>
+
+      <input type="text" placeholder="Enter card number " th:field="*{cardNumber}"/>
+      <span th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></span>
+      <br/><br/>
+      <input type="text" placeholder="Enter expiration date " th:field="*{expirationDate}"/>
+      <span th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}"></span>
+      <br/><br/>
+      <input type="text" placeholder="Enter cvc " th:field="*{cvc}"/>
+      <span th:if="${#fields.hasErrors('cvc')}" th:errors="*{cvc}"></span>
+      <br/><br/>
+      <button type ="submit"> Submit order</button>
+    </form>
+
+    <div class="input-fields">
+      <div class="column-1">
+        <label for="cardholder">Cardholder's Name</label>
+        <input type="text" id="cardholder" />
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+</body>
+
+
+<style>
+  .checkout-panel {
+    display: flex;
+    flex-direction: column;
+    width: 940px;
+    height: 766px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2);
+  }
+  .panel-body {
+    padding: 45px 80px 0;
+    flex: 1;
+  }
+  .title {
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 40px;
+    color: #2e2e2e;
+  }
+  .payment-method {
+    display: flex;
+    margin-bottom: 60px;
+    justify-content: space-between;
+  }
+  .card-logos {
+    display: flex;
+    width: 10px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .radio-input {
+    margin-top: 20px;
+  }
+  .input-fields {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .input-fields label {
+    display: block;
+    margin-bottom: 10px;
+    color: #b4b4b4;
+  }
+
+</style>
+
+
+<script>
+  $(document).ready(function() {
+
+    $('.method').on('click', function() {
+      $('.method').removeClass('blue-border');
+      $(this).addClass('blue-border');
+    });
+
+  })
+</script>
+<script>
+  var $cardInput = $('.input-fields input');
+
+  $('.next-btn').on('click', function(e) {
+
+    $cardInput.removeClass('warning');
+
+    $cardInput.each(function() {
+      var $this = $(this);
+      if (!$this.val()) {
+        $this.addClass('warning');
+      }
+    })
+  });
+</script>
+<!--
+    <body>
+    <div class="checkout-panel">
+        <div class="panel-body">
+            <h2 class="title">Checkout</h2>
+
+            <div class="progress-bar">
+                <div class="step active"></div>
+                <div class="step active"></div>
+                <div class="step"></div>
+                <div class="step"></div>
+            </div>
+
+            <div class="payment-method">
+                <label for="card" class="method card">
+                    <div class="card-logos">
+                        <img src="img/visa_logo.png"/>
+                        <img src="img/mastercard_logo.png"/>
+                    </div>
+
+                    <div class="radio-input">
+                        <input id="card" type="radio" name="payment">
+                        Pay £340.00 with credit card
+                    </div>
+                </label>
+
+                <label for="paypal" class="method paypal">
+                    <img src="img/paypal_logo.png"/>
+                    <div class="radio-input">
+                        <input id="paypal" type="radio" name="payment">
+                        Pay £340.00 with PayPal
+                    </div>
+                </label>
+            </div>
+
+            <div class="input-fields">
+                <div class="column-1">
+                    <label for="cardholder">Cardholder's Name</label>
+                    <input type="text" id="cardholder" />
+
+                    <div class="small-inputs">
+                        <div>
+                            <label for="date">Valid thru</label>
+                            <input type="text" id="date" placeholder="MM / YY" />
+                        </div>
+
+                        <div>
+                            <label for="verification">CVV / CVC *</label>
+                            <input type="password" id="verification"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="column-2">
+                    <label for="cardnumber">Card Number</label>
+                    <input type="password" id="cardnumber"/>
+
+                    <span class="info">* CVV or CVC is the card security code, unique three digits number on the back of your card separate from its number.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <button class="btn back-btn">Back</button>
+            <button class="btn next-btn">Next Step</button>
+        </div>
+    </div>
+ -->
+</body>
+
+</html>

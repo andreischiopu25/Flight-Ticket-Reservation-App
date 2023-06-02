@@ -147,8 +147,9 @@ public class FlightController {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("contact@blueair.com");
             message.setTo("licenta.utm2023@gmail.com");
-            message.setSubject("Subiect");
-            message.setText("Continutul subiectului");
+            message.setSubject("Payment Confirmation");
+            message.setText("Hi there," + "\n"+"Thank you for choosing our company ! We've successfully processed your payment."+ "\n"
+                    + "If you have any further questions please send us an email at BlueSky@office.com" );
             mailSender.send(message);
 
             return "payment-confirmation";

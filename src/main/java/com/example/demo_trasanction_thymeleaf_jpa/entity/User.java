@@ -18,7 +18,6 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private BigDecimal balance;
     private String password;
 
 
@@ -31,7 +30,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.balance = balance;
     }
 
     public Long getId() {
@@ -74,11 +72,4 @@ public class User {
         this.password = password;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
 }

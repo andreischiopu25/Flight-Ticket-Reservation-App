@@ -10,12 +10,13 @@
     <style>
         a:hover, a {
             text-decoration: none;
-            color: #8B78E6;
+            color: #7393B3;
         }
 
         .button_default, .button_default:hover {
-            background-color: #8B78E6;
+            background-color: #7393B3;
             color: white;
+            font-size: 24px;
         }
 
         .help-block {
@@ -33,6 +34,12 @@
         .font-size-xsmall {
             font-size: 1rem;
         }
+
+        body {
+            background-image: url(images/background.jpg);
+            background-repeat: repeat-x, repeat;
+            background-size: 100%;
+        }
     </style>
 
     <style>
@@ -41,7 +48,7 @@
         }
 
         .bg-header-color {
-            background-color: #8B78E6;
+            background-color: #7393B3;
         }
 
         .app-header {
@@ -57,10 +64,53 @@
         .card-background__header {
             background-color: #f8f9fa;
         }
+
+        .well {
+            background: none;
+            height: 320px;
+        }
+
+        /*.table-scroll tbody {*/
+        /*    position: absolute;*/
+        /*    overflow-y: scroll;*/
+        /*    height: 250px;*/
+        /*}*/
+
+        /*.table-scroll tr {*/
+        /*    width: 75%;*/
+        /*    table-layout: fixed;*/
+        /*    display: inline-table;*/
+        /*}*/
+        /*.table-scroll td{*/
+        /*    height: 50px;*/
+        /*    vertical-align: bottom;*/
+        /*}*/
+
+        /*.table-scroll thead > tr > th {*/
+        /*    border: none;*/
+        /*}*/
+
+        .table tbody {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+
+        th {
+            text-align: left;
+        }
+
     </style>
-
-
-
+    <script>
+        $('table').scrollTableBody();
+    </script>
 
 </head>
 <body>
@@ -80,8 +130,8 @@
     </div>
 </nav>
 
-<div class="main-content">
-        <div class="container-fluid bg-light py-4 mb-2">
+<div class="main-content"  >
+               <div class="container-fluid bg-light py-4 mb-2" th:if="${user.name == 'admin'}">
             <div class="app-header">
             <!--    <h2 class="font-weight-light">
                     List of flights
@@ -92,23 +142,13 @@
                 </div>
             </div>
         </div>
+               <br><br><br>
 
-       <div class="container-fluid bg-light py-4 mb-2" th:if="${user.name == 'andrei'} " >
-            <div class="app-header">
-            <!--    <h2 class="font-weight-light">
-                    List of flights
-                </h2>   -->
-                <div class="mt-4">
-                    <a class="btn  button_default text"
-                       th:href="@{/createFlight}">Buton Admin</a>
-                </div>
-            </div>
-        </div>
-         <div class="app-header">
+               <div class="app-header" >
           <!-- update and delete -->
-             <div class="row justify-content-center">
-                 <div class="col-auto">
-                     <table class="table table-responsive">
+                      <div class="row justify-content-center">
+                      <div class="col-auto">
+                      <table class="table table-striped" >
                          <thead>
                          <th>Destination</th>
                          <th>Departure</th>
@@ -128,15 +168,16 @@
                              <td th:text="${flight.airplane}"></td>
                              <td th:text="${flight.seats}"></td>
                              <td th:text="${flight.price}"></td>
-
-                             <td> <a th:href ="@{/bookFlightTicket(id=${flight.flightId})}">Buy</a> </td>
+                             <td th:if="${user.name != 'admin'}">
+                                   <a th:href ="@{/bookFlightTicket(id=${flight.flightId})}" class = "btn btn-light" >Buy</a>
+                             </td>
                          </tr>
                          </tbody>
                      </table>
                  </div>
 
              </div>
-         </div>
+               </div>
 </div>
 
 
