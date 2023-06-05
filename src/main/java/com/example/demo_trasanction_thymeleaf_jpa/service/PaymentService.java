@@ -45,12 +45,12 @@ public class PaymentService {
         //map the DTO to entity
         Payment payment = mapToEntity (paymentDTO);
 
-        // add the logged in user to the expense entity
+        // add the logged in user to the flight entity
         payment.setUser(userService.getLoggedInUser());
 
       //  payment.setUser(userService.getLoggedInUser());
 
-        //add the loggedin user to the expense entity
+        //add the loggedin user to the flight entity
         //    expense.setUser(userService.getLoggedInUser());
         //Save the entity to Database
         payment = paymentRepository.save(payment);

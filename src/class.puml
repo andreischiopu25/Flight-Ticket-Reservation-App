@@ -1,0 +1,155 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface FlightRepository
+interface PaymentRepository
+interface UserRepository
+interface UserDetailsService
+interface JpaRepository
+class FlightService
+class UserService
+class PaymentService
+class Flight
+class Payment
+class User
+class FlightController
+
+
+
+
+
+interface FlightRepository {
+    findByFlightId(String id)
+}
+interface PaymentRepository{
+     findByPaymentId(String id);
+}
+interface UserRepository{
+     findByEmail(String email);
+}
+
+interface UserDetailsService {
+    loadUserByUsername(String username);
+}
+
+
+
+class FlightService {
+    FlightRepository
+    UserService
+    getAllFlights();
+    getFlight(String id)
+    FlightDTO getFlightById (String id);
+    deleteFlight(String id);
+    totalFlights (List<FlightDTO> flight)
+    reserveTickets(String nrOfSeats, String flightId)
+}
+
+class UserService{
+    UserRepository;
+    void save(UserDTO);
+    User getLoggedInUser();
+}
+class PaymentService{
+        PaymentRepository;
+}
+
+class CustomUserDetailsService {
+    UserRepository;
+}
+
+class EmailSenderService {
+
+    JavaMailSender mailSender;
+    sendEmail()
+}
+
+class Flight {
+
+    id;
+    flightId;
+    destination;
+    pickupTime;
+    arrivalTime;
+    price;
+    airplane;
+    date;
+    seats;
+}
+class Payment {
+
+    id;
+    paymentId;
+    cardNumber;
+    amount;
+    cardType;
+    expirationDate;
+    cvc;
+    user;
+    flightId;
+    seats
+}
+class User{
+            id;
+            userId;
+            name;
+            email;
+            password;
+}
+
+class FlightController {
+        FlightService ;
+        PaymentService ;
+        UserService;
+        AsyncServiceImpl;
+        showFlightList();
+        showFlightForm();
+        saveOrUpdateFlightDetails();
+        deleteFlight();
+        updateFlight();
+        bookFlightTicket();
+        saveOrUpdateReservationDetails();
+        showPayment();
+        showFlightAdminForm();
+}
+
+class AuthController{
+        UserService;
+        showLoginPage();
+        showRegisterPage();
+        register();
+}
+class CustomSecurityConfig{
+    CustomUserDetailsService;
+    securityFilterChain();
+}
+
+class AsyncServiceImpl{
+        PaymentService;
+        Logger;
+        asyncMethod();
+
+}
+
+User *-- Payment
+Flight *-- Payment
+
+JpaRepository <|-- FlightRepository:extends
+JpaRepository  <|-- UserRepository:extends
+JpaRepository <|--  PaymentRepository:extends
+
+
+
+FlightRepository <|- FlightService:implements
+UserRepository <|- UserService:implements
+PaymentRepository <|- PaymentService:implements
+UserDetailsService<|-CustomUserDetailsService:implements
+
+FlightService - FlightController
+EmailSenderService - FlightController
+AsyncServiceImpl - FlightController
+UserService - AuthController
+CustomUserDetailsService - CustomSecurityConfig
+
+@enduml

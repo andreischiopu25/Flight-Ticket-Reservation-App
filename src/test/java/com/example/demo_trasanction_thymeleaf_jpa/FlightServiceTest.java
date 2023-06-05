@@ -28,7 +28,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class FlightServiceTest {
 
-
     private final UserService userService;
 
     private final FlightService flightService;
@@ -71,7 +70,6 @@ public class FlightServiceTest {
         flight1.setAirplane("Boeing");
         flight1.setDate(dateTimeUtil.convertStringToDate("09/07/2019"));
     }
-
     @Test
     @WithMockUser(username = "andrei@gmail.com", password = "123456")
     void testSaveFlightDetails() throws ParseException {

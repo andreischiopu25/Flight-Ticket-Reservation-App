@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+User -> LoginPage: Introducere username
+User -> LoginPage: Introducere password
+User -> LoginPage: Click  Login
+LoginPage ->AuthenticationModule:  Trimitere user login info
+AuthenticationModule ->AuthenticationModule: Validare username si password
+alt successful case
+AuthenticationModule -->LoginPage: User acceptat
+LoginPage ->LoginPage: Redirectare catre pagina urmatoare
+else some kind of failure
+AuthenticationModule -->LoginPage: User rejectat
+LoginPage -->User: Curatarea campurilor de logare \n si informeaza despre invalidarea credentialelor
+
+@enduml
